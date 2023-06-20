@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Companies{% endblock title %}
+{% block static %}
+<link rel="stylesheet" type="text/css" href="{% static "css/index.css" %}" type=”image/x-icon”>
+{% endblock static %}
+{% block body %}
+<table>
+    <thead>
+    <tr>
+        <th>Company name</th>
+        <th>Number of open job vacancies</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for company in companies %}
+        <tr>
+            <td>{{ company.name }}</td>
+            <td>{{ company.vacancies.all|length }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+  {% endblock body %}
