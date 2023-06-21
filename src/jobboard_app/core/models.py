@@ -89,8 +89,8 @@ class Company(models.Model):
         Adress, on_delete=models.SET_NULL, null=True, blank=True
     )
     sectors = models.ManyToManyField(Sector, related_name='companies_sectors')
-    registred_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    registred_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
 
     class Meta:
         verbose_name_plural = 'Companies'
@@ -113,8 +113,8 @@ class Employee(models.Model):
     )
     image = models.ImageField(upload_to='image/avatar/', null=True, blank=True)
     positions = models.ManyToManyField(Position, related_name='employees_positions')
-    registred_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    registred_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
 
     class Meta:
         verbose_name_plural = 'Employees'
@@ -139,8 +139,8 @@ class Vacancy(models.Model):
     company = models.ForeignKey(
         Company, on_delete=models.CASCADE, related_name='vacancies'
     )
-    registred_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    registred_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
     countries = models.ManyToManyField(Country, related_name='vacancies_countries')
     contracts = models.ManyToManyField(Contract, related_name='vacancies_contracts')
     levels = models.ManyToManyField(Level, related_name='vacancies_levels')
@@ -165,8 +165,8 @@ class Review(models.Model):
     company = models.ForeignKey(
         Company, on_delete=models.CASCADE, related_name='reviews'
     )
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
 
     class Meta:
         unique_together = ('user', 'company')
@@ -180,8 +180,8 @@ class ReviewRating(models.Model):
     review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name='ratings')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ratings')
     rating = models.ForeignKey(Rating, on_delete=models.CASCADE, related_name='reviews')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
 
     class Meta:
         unique_together = ('review', 'user')
@@ -233,8 +233,8 @@ class Response(models.Model):
         blank=True,
         related_name='responses',
     )
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
 
     class Meta:
         verbose_name_plural = 'Responses'

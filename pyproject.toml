@@ -20,6 +20,9 @@ python-decouple = "3.8"
 psycopg2-binary = "2.9.6"
 pillow = "9.5.0"
 
+[tool.isort]
+profile = "black"
+
 [tool.black]
 skip-string-normalization = true
 
