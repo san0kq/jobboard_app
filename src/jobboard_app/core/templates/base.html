@@ -14,9 +14,9 @@
             <img src="{% static "image/logo.png" %}" alt="LOGO_ALT">
         </div>
         <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/add">Add vacancy</a></li>
-          <li><a href="/companies">List of companies </a></li>
+          <li><a href="{% url 'index' %}">Home</a></li>
+          <li><a href="{% url 'add-vacancy' %}">Add vacancy</a></li>
+          <li><a href="{% url 'company-list' %}">List of companies </a></li>
         </ul>
       </nav>
     {% block body %}{% endblock body %}
