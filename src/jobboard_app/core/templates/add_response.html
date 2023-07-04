@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Add response{% endblock title %}
+{% block static %}
+<link rel="stylesheet" type="text/css" href="{% static "css/core/add_response.css" %}" type=”image/x-icon”>
+{% endblock static %}
+{% block body %}
+
+<form method="POST">
+    {% csrf_token %}
+    <table>
+      <h1>{{ vacancy.name }} in {{ vacancy.company.name }}</h1>
+      {{ form }}
+    </table>
+    <input type="submit" value="Send" class="button">
+</form>
+  {% endblock body %}

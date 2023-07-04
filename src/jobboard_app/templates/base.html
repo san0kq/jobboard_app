@@ -11,14 +11,20 @@
   <body>
     <nav>
         <div class="logo">
-            <img src="{% static "image/logo.png" %}" alt="LOGO_ALT">
+          <img src="{% static "image/logo.png" %}" alt="LOGO_ALT">
         </div>
         <ul>
           <li><a href="{% url 'index' %}">Home</a></li>
           <li><a href="{% url 'add-vacancy' %}">Add vacancy</a></li>
+          <li><a href="{% url 'add-company' %}">Add company</a></li>
           <li><a href="{% url 'company-list' %}">List of companies </a></li>
         </ul>
-      </nav>
+        <div class="avatar">
+          <img class="default-image" src="{% static "image/default-avatar.png" %}" alt="AVATAR_ALT">
+          <a href="{% url 'profile' %}">Profile</a>
+        </div>
+        
+    </nav>
     {% block body %}{% endblock body %}
   </body>
 </html>

@@ -20,3 +20,6 @@ table {
   table tbody tr:hover {
     background: #ddd;
   }
+  tr {
+    cursor: pointer;
+  }

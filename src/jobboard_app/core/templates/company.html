@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{{ company.name }}{% endblock title %}
+{% block static %}
+<link rel="stylesheet" type="text/css" href="{% static "css/core/company.css" %}" type=”image/x-icon”>
+{% endblock static %}
+{% block body %}
+<div class="company">
+    <div>
+        <img src="{% static "image/default-logo.png" %}" alt="avatar-alt" class="avatar-main">
+        <p>{{ profile.status.name }}</p>
+    </div>
+    <div class="company-info">
+      <h2>{{ company.name }}</h2>
+      <p>Employees: {{ company.employees_number.size_range }}</p>
+      <p>Founded in: {{ company.founded_in }}</p>
+      <p>Email: {{ company.email }}</p>
+      <p>Phone: {{ company.phone_number }}</p>
+      <p>Web site: {{ company.web_site }}</p>
+      <p>Location: {{ company.adress.city.country.name }}, {{ company.adress.city.name }}, {{ company.adress.street }}, {{ company.adress.house_number }}
+        {% if company.adress.office_number %}
+          -{{ company.adress.office_number }}
+        {% endif %}
+      </p>
+      {% if company.social_links.all %}
+        {% for link in company.social_links.all %}
+          <p>{{ link.platform }}: {{ link.url }}</p>
+        {% endfor %}
+      {% endif %}
+      <p>Sectors: 
+        {% for sector in company.sectors.all %}
+          {{ sector.name }}
+        {% endfor %}
+      </p>
+    </div>
+  </div>
+  <div class="about-info">
+    <h2>About</h2>
+    <p>{{ company.description }}</p>
+  </div>
+
+  <div class="reviews">
+    <hr>
+    <div class="review-action">
+      <h2>Reviews</h2>
+      <button class="button-review" onclick="window.location.href='{% url 'company-review' company.pk %}';">Create review</button>
+    </div>
+    {% for review in company.reviews.all %}
+      <div class="review">
+        <img src="{% static "image/default-avatar.png" %}" alt="avatar-alt" class="review-avatar">
+        <div class="review-text">
+          <div class="user-name">{{ review.user.first_name }} {{ review.user.last_name }}</div>
+          <p>{{ review.text }}</p>
+          <div class="publication-date">{{ review.created_at }}</div>
+        </div>
+      </div>
+    {% endfor %}
+</div>
+{% endblock body %}

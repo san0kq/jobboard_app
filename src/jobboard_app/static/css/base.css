@@ -33,3 +33,12 @@ body {
   a:hover {
     color: #d9dad4;
   }
+  .default-image {
+    width: 110px;
+  }
+  .avatar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 1%;
+  }

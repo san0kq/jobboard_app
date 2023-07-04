@@ -139,6 +139,7 @@ class Profile(models.Model):
     )
     image = models.ImageField(upload_to='image/avatar/', null=True, blank=True)
     resume = models.TextField()
+    about = models.CharField(max_length=500, null=True, blank=True)
     years_exp = models.PositiveSmallIntegerField(
         validators=[MaxValueValidator(120)], null=True, blank=True
     )

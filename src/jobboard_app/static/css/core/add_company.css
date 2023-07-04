@@ -1,6 +1,7 @@
 table {
     border-collapse: collapse;
-    margin: 5rem auto;
+    margin-bottom: 1rem;
+    margin-top: 5rem;
   }
   table th,
   table td {
@@ -36,13 +37,13 @@ form {
     font-size: 1rem;
     padding: 0.5rem;
   }
-  form button {
+  form .button {
     background: #333;
     border: none;
     color: #fff;
     font-size: 1rem;
     padding: 0.5rem 1rem;
   }
-  form button:hover {
+  form .button:hover {
     background: #555;
   }

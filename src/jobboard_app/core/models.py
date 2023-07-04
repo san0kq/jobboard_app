@@ -84,13 +84,16 @@ class Company(models.Model):
     description = models.TextField()
     email = models.EmailField()
     phone_number = models.CharField(max_length=20)
-    web_site = models.URLField()
+    web_site = models.URLField(
+        max_length=200,
+        error_messages={"invalid": "Invalid URL. Example: https://www.job-board.by"},
+    )
     adress = models.OneToOneField(
         Adress, on_delete=models.SET_NULL, null=True, blank=True
     )
     sectors = models.ManyToManyField(Sector, related_name='companies_sectors')
-    registred_at = models.DateTimeField(auto_now_add=True, null=True)
-    updated_at = models.DateTimeField(auto_now=True, null=True)
+    registred_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name_plural = 'Companies'
@@ -113,8 +116,8 @@ class Employee(models.Model):
     )
     image = models.ImageField(upload_to='image/avatar/', null=True, blank=True)
     positions = models.ManyToManyField(Position, related_name='employees_positions')
-    registred_at = models.DateTimeField(auto_now_add=True, null=True)
-    updated_at = models.DateTimeField(auto_now=True, null=True)
+    registred_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name_plural = 'Employees'
@@ -139,8 +142,8 @@ class Vacancy(models.Model):
     company = models.ForeignKey(
         Company, on_delete=models.CASCADE, related_name='vacancies'
     )
-    registred_at = models.DateTimeField(auto_now_add=True, null=True)
-    updated_at = models.DateTimeField(auto_now=True, null=True)
+    registred_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     countries = models.ManyToManyField(Country, related_name='vacancies_countries')
     contracts = models.ManyToManyField(Contract, related_name='vacancies_contracts')
     levels = models.ManyToManyField(Level, related_name='vacancies_levels')
@@ -160,16 +163,16 @@ class Vacancy(models.Model):
 
 
 class Review(models.Model):
-    text = models.CharField(max_length=800)
+    text = models.TextField(max_length=800)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews')
     company = models.ForeignKey(
         Company, on_delete=models.CASCADE, related_name='reviews'
     )
-    created_at = models.DateTimeField(auto_now_add=True, null=True)
-    updated_at = models.DateTimeField(auto_now=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        unique_together = ('user', 'company')
+        # unique_together = ('user', 'company')
         verbose_name_plural = 'Reviews'
 
     def __str__(self) -> str:
@@ -180,8 +183,8 @@ class ReviewRating(models.Model):
     review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name='ratings')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ratings')
     rating = models.ForeignKey(Rating, on_delete=models.CASCADE, related_name='reviews')
-    created_at = models.DateTimeField(auto_now_add=True, null=True)
-    updated_at = models.DateTimeField(auto_now=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         unique_together = ('review', 'user')
@@ -193,7 +196,10 @@ class ReviewRating(models.Model):
 
 class SocialLink(models.Model):
     platform = models.CharField(max_length=100)
-    url = models.URLField(unique=True)
+    url = models.URLField(
+        max_length=200,
+        error_messages={"invalid": "Invalid URL. Example: https://www.job-board.by"},
+    )
     profile = models.ForeignKey(
         Profile,
         on_delete=models.CASCADE,
@@ -225,6 +231,7 @@ class Response(models.Model):
         Vacancy, on_delete=models.CASCADE, related_name='responses'
     )
     text = models.CharField(max_length=500)
+    resume = models.TextField()
     phone_number = models.CharField(max_length=20)
     status = models.ForeignKey(
         Status,
@@ -232,9 +239,10 @@ class Response(models.Model):
         null=True,
         blank=True,
         related_name='responses',
+        default=4,
     )
-    created_at = models.DateTimeField(auto_now_add=True, null=True)
-    updated_at = models.DateTimeField(auto_now=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name_plural = 'Responses'

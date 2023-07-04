@@ -2,7 +2,7 @@
 {% load static %}
 {% block title %}Companies{% endblock title %}
 {% block static %}
-<link rel="stylesheet" type="text/css" href="{% static "css/index.css" %}" type=”image/x-icon”>
+<link rel="stylesheet" type="text/css" href="{% static "css/core/index.css" %}" type=”image/x-icon”>
 {% endblock static %}
 {% block body %}
 <table>
@@ -14,7 +14,7 @@
     </thead>
     <tbody>
     {% for company in companies %}
-        <tr>
+        <tr onclick="window.location.href='{% url 'company' company.pk %}'; return false">
             <td>{{ company.name }}</td>
             <td>{{ company.vacancies.all|length }}</td>
         </tr>

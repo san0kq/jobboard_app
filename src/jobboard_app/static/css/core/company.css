@@ -1,0 +1,91 @@
+.company {
+    margin: 2rem auto;
+    padding-left: 3rem;
+    padding-right: 3rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .avatar-main {
+    width: 400px;
+    border-radius: 50%;
+    margin-right: 1rem;
+  }
+  .company-info {
+    text-align: left;
+  }
+  h2 {
+    margin-bottom: 0.5rem;
+    font-size: 24px;
+  }
+  p {
+    margin-bottom: 0.5rem;
+  }
+  p:last-child {
+    margin-bottom: 0;
+  }
+  a {
+    color: #333;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  .about-info {
+    margin: 2rem auto;
+    margin-left: 15rem;
+    margin-right: 15rem;
+  }
+  .reviews {
+    max-width: 1500px;
+    margin-left: 15rem;
+    margin-right: 15rem;
+    margin-top: 2rem;
+  }
+  
+  .review {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .review-avatar {
+    width: 100px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  
+  .review-text {
+    display: flex;
+    width: 500px;
+    flex-grow: 1;
+    flex-direction: column;
+    justify-content: space-between;
+    word-wrap: break-word;
+  }
+  
+  .user-name {
+    font-weight: bold;
+    margin-bottom: 5px; /* Расстояние между именем пользователя и текстом рецензии */
+  }
+  
+  .publication-date {
+    align-self: flex-end;
+    font-size: 12px; /* Задайте нужный размер шрифта для даты */
+    color: #999; /* Задайте нужный цвет текста для даты */
+  }
+  .review-action {
+    display: flex;
+    justify-content: space-between;
+  }
+  .button-review {
+    height: 50px;
+    width: 150px;
+    background-color: #333;
+    color: aliceblue;
+    font-size: 20px;
+    cursor: pointer;
+  }
