@@ -19,7 +19,5 @@ urlpatterns = [
     path("vacancy/<int:pk>", VacancyView.as_view(), name="vacancy"),
     path("vacancy/<int:pk>/apply", VacancyApplyView.as_view(), name="vacancy-apply"),
     path("company/<int:pk>", CompanyView.as_view(), name="company"),
-    path(
-        "company/<int:pk>/review", CompanyAddReviewView.as_view(), name="company-review"
-    ),
+    path("company/<int:pk>/review", CompanyAddReviewView.as_view(), name="company-review"),
 ]

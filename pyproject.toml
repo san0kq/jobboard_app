@@ -25,6 +25,7 @@ profile = "black"
 
 [tool.black]
 skip-string-normalization = true
+line-length = 111
 
 [tool.mypy]
 mypy_path = "src/jobboard_app"
