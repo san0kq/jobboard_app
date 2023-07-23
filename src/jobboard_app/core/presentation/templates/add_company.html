@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Add new company{% endblock title %}
+{% block static %}
+<link rel="stylesheet" type="text/css" href="{% static "css/core/add_company.css" %}" type=”image/x-icon”>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
+{% endblock static %}
+{% block body %}
+<form method="POST" id="company-form" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table>
+    {{ company_form }}
+    </table>
+    <table id="sociallinks-container" class="social-links">
+      <h2>Social Links</h2>
+      {{ sociallinks_formset.management_form }}
+      <input type="hidden" id="form-TOTAL_FORMS" name="form-TOTAL_FORMS" value=1>
+      <input type="hidden" id="form-INITIAL_FORMS" name="form-INITIAL_FORMS" value=0>
+      {% for form in sociallink_formset %}
+        {{ form }}
+      {% endfor %}
+    </table>
+      
+    <button type="button" id="add-more" class="button" onclick="addSocialLinkForm()">Add more</button>
+    <input type="submit" value="Send" class="button" >
+</form>
+  {% endblock body %}
+
+{% block script %}
+<script>
+  var formCounter = {{ sociallink_formset|length }};
+  var maxForms = 3;
+
+  function addSocialLinkForm() {
+    if (formCounter < maxForms) {
+      var formContainer = document.getElementById("sociallinks-container");
+      var formIdx = formContainer.children.length -2;
+      var formHTML = "{{ sociallink_formset.empty_form|escapejs }}".replace(/__prefix__/g, formIdx);
+      formContainer.insertAdjacentHTML('beforeend', formHTML);
+      formCounter++;
+
+      if (formCounter === maxForms) {
+        document.getElementById("add-more").style.display = "none";
+      }
+
+      var totalFormsInput = document.getElementById("form-TOTAL_FORMS");
+      totalFormsInput.value = formCounter;
+    }
+  }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        {% if error_message %}
+        Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: '{{ error_message }}',
+            timer: 5000,
+            timerProgressBar: true,
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false
+        });
+        {% endif %}
+    });
+</script>
+{% endblock script %}

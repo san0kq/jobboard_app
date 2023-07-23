@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Add new vacancy{% endblock title %}
+{% block static %}
+<link rel="stylesheet" type="text/css" href="{% static "css/core/add_vacancy.css" %}" type=”image/x-icon”>
+{% endblock static %}
+{% block body %}
+<form method="POST">
+    {% csrf_token %}
+    <table>
+      {{ form }}
+    </table>
+    <input type="submit" value="Send" class="button" >
+</form>
+  {% endblock body %}
+  {% block script %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const noSpaceField = document.querySelector('#id_tags');
+  
+      noSpaceField.addEventListener('keydown', function(event) {
+        if (event.key === ' ') {
+          event.preventDefault();
+        }
+      });
+    });
+  </script>
+  {% endblock script %}

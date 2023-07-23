@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Job Vacancies{% endblock title %}
+{% block static %}
+<link rel="stylesheet" type="text/css" href="{% static "css/core/index.css" %}" type=”image/x-icon”>
+{% endblock static %}
+{% block body %}
+<div class="filter-container">
+    <div class="filter-toggle" onclick="toggleFilter()">Filter</div>
+</div>
+<div class="filter-bar" id="filterBar">
+    <form method="GET" class="filter-form">
+        {{ form }}
+        <input type="submit" id="submit" class="button">
+    </form>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>Job title</th>
+        <th>Company name</th>
+        <th>Level</th>
+        <th>Minimum experience</th>
+        <th>Salary range</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for vacancy in vacancies %}
+        <tr onclick="window.location.href='{% url 'vacancy' vacancy.pk %}'; return false">
+            <td>{{ vacancy.name }}</td>
+            <td>{{ vacancy.company.name }}</td>
+            <td>{% if vacancy.levels.all|length == 1 %}
+                    {{ vacancy.levels.first }}
+                {% else %}
+                    {% for level in vacancy.levels.all %}
+                        {{ level }}
+                    {% endfor %}
+                {% endif %}
+            </td>
+            <td>{{ vacancy.years_exp }} years</td>
+            {% if vacancy.salary.min_salary and vacancy.salary.max_salary %}
+                <td>{{ vacancy.salary.min_salary}}$ - {{ vacancy.salary.max_salary}}$</td>
+            {% elif not vacancy.salary.min_salary and not vacancy.salary.max_salary %}
+                <td>-</td>
+            {% elif not vacancy.salary.min_salary %}
+                <td>up to {{ vacancy.salary.max_salary }}$</td>
+            {% elif not vacancy.salary.max_salary %}
+                <td>from {{ vacancy.salary.min_salary }}$</td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock body %}
+{% block script %}
+<script>
+function toggleFilter() {
+    const filterBar = document.getElementById("filterBar");
+
+    if (filterBar.style.display === "none") {
+        filterBar.style.display = "block";
+        filterBar.style.animation = "slideIn 0.5s";
+    } else {
+        filterBar.style.animation = "slideOut 0.5s";
+        setTimeout(() => {
+            filterBar.style.display = "none";
+        }, 500);
+    }
+}
+</script>
+{% endblock script %}

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Companies{% endblock title %}
+{% block static %}
+<link rel="stylesheet" type="text/css" href="{% static "css/core/index.css" %}" type=”image/x-icon”>
+{% endblock static %}
+{% block body %}
+<div class="filter-container">
+    <div class="filter-toggle" onclick="toggleFilter()">Filter</div>
+</div>
+<div class="filter-bar" id="filterBar">
+    <form method="GET" class="filter-form">
+        {{ form }}
+        <input type="submit" id="submit" class="button">
+    </form>
+</div>
+<table>
+    <thead>
+    <tr>
+        <th>Company name</th>
+        <th>Number of open job vacancies</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for company in companies %}
+        <tr onclick="window.location.href='{% url 'company' company.pk %}'; return false">
+            <td>{{ company.name }}</td>
+            <td>{{ company.vacancy__count }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock body %}
+{% block script %}
+<script>
+function toggleFilter() {
+    const filterBar = document.getElementById("filterBar");
+
+    if (filterBar.style.display === "none") {
+        filterBar.style.display = "block";
+        filterBar.style.animation = "slideIn 0.5s";
+    } else {
+        filterBar.style.animation = "slideOut 0.5s";
+        setTimeout(() => {
+            filterBar.style.display = "none";
+        }, 500);
+    }
+}
+</script>
+{% endblock script %}

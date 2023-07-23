@@ -1,25 +1,85 @@
 table {
     border-collapse: collapse;
     margin: 5rem auto;
-  }
-  table th,
-  table td {
-    padding: 1rem;
-    text-align: left;
-  }
-  table th {
-    background: #333;
-    color: #fff;
-  }
-  table td:first-child {
-    font-weight: bold;
-  }
-  table tbody tr:nth-child(odd) {
-    background: #f0f0f0;
-  }
-  table tbody tr:hover {
-    background: #ddd;
-  }
-  tr {
-    cursor: pointer;
-  }
+}
+table th,
+table td {
+  padding: 1rem;
+  text-align: left;
+}
+table th {
+  background: #333;
+  color: #fff;
+}
+table td:first-child {
+  font-weight: bold;
+}
+table tbody tr:nth-child(odd) {
+  background: #f0f0f0;
+}
+table tbody tr:hover {
+  background: #ddd;
+}
+tr {
+  cursor: pointer;
+}
+.filter-bar {
+  background-color: #f1f1f1;
+  padding: 20px;
+  display: none;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.filter-toggle {
+  cursor: pointer;
+}
+.filter-form {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.filter-container {
+  background-color: #888686;
+  color: white;
+  text-align: center;
+  padding: 10px;
+}
+.filter-toggle {
+  cursor: pointer;
+  font-size: 20px;
+}
+.filter-form input {
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.filter-form label {
+  font-weight: bold;
+  margin-right: 10px;
+  align-self: center;
+}
+
+input::placeholder {
+  color: #aaa;
+}
+
+.button {
+  padding: 10px 20px;
+  flex: none;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #444;
+}

@@ -163,5 +163,4 @@ cython_debug/
 .vscode/
 
 # Django media files
-media/image/*
-!media/image/.gitkeep
+media/*
