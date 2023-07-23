@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{{ profile.user.first_name}} {{ profile.user.last_name }}{% endblock title %}
+{% block static %}
+<link rel="stylesheet" type="text/css" href="{% static "css/accounts/profile.css" %}" type=”image/x-icon”>
+{% endblock static %}
+{% block body %}
+<div class="profile">
+    <div>
+        <img src="{% static "image/default-avatar.png" %}" alt="avatar-alt" class="avatar-main">
+        <p>{{ profile.status.name }}</p>
+    </div>
+    <div class="user-info">
+      <h2>{{ profile.user.first_name}} {{ profile.user.last_name }}</h2>
+      <p>Date of Birth: {{ profile.birthday }}</p>
+      <p>Age: {{ profile.age }}</p>
+      <p>Gender: {{ profile.gender.name }}</p>
+      <p>Email: {{ profile.user.email }}</p>
+      <p>Phone: {{ profile.phone_number }}</p>
+      <p>Location: {{ profile.city.name }}, {{ profile.city.country.name }}</p>
+      <p>LinkedIn: 
+        {% for link in profile.social_links.all %}
+            {% if link.platform == "linkedin" %}
+                <a href={{ link.url }}>{{ link.url }}</a>
+            {% endif %}
+        {% endfor %}
+        </p>
+      <p>Github: 
+        {% for link in profile.social_links.all %}
+            {% if link.platform == "github" %}
+                <a href={{ link.url }}>{{ link.url }}</a>
+            {% endif %}
+        {% endfor %}
+      <p>Level: {{ profile.level.name }}</p>
+      <p>Experience: {{ profile.years_exp }} years</p>
+      <p>Work Format: {{ profile.work_format.name }}</p>
+      <p>Contract Format: {{ profile.contract.name }}</p>
+      {% if profile.salary.min_salary and profile.salary.max_salary %}
+                <p>Salary range: {{ profile.salary.min_salary}}$ - {{ profile.salary.max_salary}}$<p>
+            {% elif not profile.salary %}
+                <p>Salary range: -</p>
+            {% elif not profile.salary.min_salary %}
+                <p>Salary range: up to {{ profile.salary.max_salary }}$</p>
+            {% elif not profile.salary.max_salary %}
+                <p>from {{ profile.salary.min_salary }}$</p>
+            {% endif %}
+      <p>Languages:
+        {% for language in profile.languages.all %} 
+            {{ language.language }} - {{ language.language_level }}<br>
+        {% endfor %}
+      </p>
+      <p>Tags: 
+        {% for tag in profile.tags.all %}
+            {{ tag.name }}
+        {% endfor %}
+      </p>
+      <p>Resume: {{ profile.resume }}</p>
+    </div>
+  </div>
+  <div class="about-info">
+    <h2>About</h2>
+    <p>{{ profile.about }}</p>
+  </div>
+{% endblock body %}
