@@ -53,7 +53,6 @@ class AddVacancyView(View):
 
 class VacancyView(View):
     def get(self, request: HttpRequest, pk: int) -> HttpResponse:
-        print(pk)
         vacancy = get_vacancy_by_pk(pk=pk)
         context = {"vacancy": vacancy}
         return render(request, "vacancy.html", context=context)
