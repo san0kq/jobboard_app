@@ -1,5 +1,4 @@
 import uuid
-from typing import Any
 
 from accounts.models import Country
 from core.business_logic.dto import AddResponseDTO, AddVacancyDTO, VacancyFilterDTO
@@ -83,8 +82,8 @@ def add_vacancy(vacancy_data: AddVacancyDTO) -> None:
             vacancy.tags.set(tags)
 
 
-def get_vacancy_by_pk(pk: int) -> Any:
-    vacancy = (
+def get_vacancy_by_pk(pk: int) -> Vacancy:
+    vacancy: Vacancy = (
         Vacancy.objects.select_related("employee", "salary", "company")
         .prefetch_related("countries", "contracts", "levels", "work_formats", "tags")
         .get(pk=pk)
