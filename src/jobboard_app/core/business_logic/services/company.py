@@ -1,5 +1,4 @@
 import uuid
-from typing import Any
 
 from accounts.models import Adress, City, Country
 from core.business_logic.dto import (
@@ -77,8 +76,8 @@ def add_company(company_data: AddCompanyDTO, sociallink_data: list[AddSocialLink
                 SocialLink.objects.create(platform=social_link.platform, url=social_link.url, company=company)
 
 
-def get_company_by_pk(pk: int) -> Any:
-    company = (
+def get_company_by_pk(pk: int) -> Company:
+    company: Company = (
         Company.objects.select_related("employees_number", "adress").prefetch_related("sectors").get(pk=pk)
     )
     return company
