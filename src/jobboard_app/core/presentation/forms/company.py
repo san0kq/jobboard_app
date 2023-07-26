@@ -24,7 +24,7 @@ class AddCompanyForm(forms.Form):
     logo = forms.ImageField(
         label="Logo",
         allow_empty_file=False,
-        validators=[ValidateFileExtension(["jpg", "png"]), ValidateFileSize(5_000_000)],
+        validators=[ValidateFileExtension(["jpg", "jpeg", "png"]), ValidateFileSize(5_000_000)],
     )
     description = forms.CharField(max_length=500, label="Description", widget=forms.Textarea, strip=True)
     email = forms.EmailField(label="Email")

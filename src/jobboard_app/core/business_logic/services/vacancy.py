@@ -1,7 +1,12 @@
+from __future__ import annotations
+
 import uuid
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from core.business_logic.dto import AddResponseDTO, AddVacancyDTO, VacancyFilterDTO
 
 from accounts.models import Country
-from core.business_logic.dto import AddResponseDTO, AddVacancyDTO, VacancyFilterDTO
 from core.models import (
     Company,
     Contract,

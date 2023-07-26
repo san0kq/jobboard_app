@@ -1,13 +1,18 @@
-import uuid
+from __future__ import annotations
 
-from accounts.models import Adress, City, Country
-from core.business_logic.dto import (
-    AddCompanyDTO,
-    AddReviewDTO,
-    AddSocialLinkDTO,
-    CompanyFilterDTO,
-)
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from core.business_logic.dto import (
+        AddCompanyDTO,
+        AddReviewDTO,
+        AddSocialLinkDTO,
+        CompanyFilterDTO,
+    )
+
+from accounts.models import Address, City, Country
 from core.business_logic.exceptions import CompanyAlreadyExists, ReviewAlreadyExists
+from core.business_logic.services.common import change_file_size, rename_file_to_uuid
 from core.models import Company, EmployeesNumber, Review, Sector, SocialLink
 from django.contrib.auth.models import User
 from django.db import transaction
@@ -38,22 +43,24 @@ def add_company(company_data: AddCompanyDTO, sociallink_data: list[AddSocialLink
     with transaction.atomic():
         if Company.objects.filter(name__icontains=company_data.name).exists():
             raise CompanyAlreadyExists(f"Company {company_data.name} is already exists.")
-        logo_extansion = company_data.logo.name.split(".")[-1]
-        logo_name = str(uuid.uuid4()) + "." + logo_extansion
-        company_data.logo.name = logo_name
-
+        company_data.logo = rename_file_to_uuid(file=company_data.logo)
+        print(company_data.logo)
+        company_data.logo = change_file_size(file=company_data.logo)
+        print(company_data.logo)
         if not company_data.office_number:
             company_data.office_number = 0
 
         city = City.objects.get_or_create(
             name=company_data.city.capitalize(), country=Country.objects.get(name=company_data.country)
         )
-        adress = Adress.objects.get_or_create(
+        address = Address.objects.get_or_create(
             city=city[0],
             street=company_data.street,
             house_number=company_data.house_number,
             office_number=company_data.office_number,
-        )
+        )[0]
+        if Company.objects.filter(address=address.pk).exists():
+            raise CompanyAlreadyExists("The company with such address already exist")
 
         sectors = [Sector.objects.get(name=sector) for sector in company_data.sectors]
         employyes_number = EmployeesNumber.objects.get(size_range=company_data.employees_number)
@@ -67,7 +74,7 @@ def add_company(company_data: AddCompanyDTO, sociallink_data: list[AddSocialLink
             email=company_data.email,
             phone_number=company_data.phone_number,
             web_site=company_data.web_site,
-            adress=adress[0],
+            address=address,
         )
         company.sectors.set(sectors)
 
@@ -78,7 +85,7 @@ def add_company(company_data: AddCompanyDTO, sociallink_data: list[AddSocialLink
 
 def get_company_by_pk(pk: int) -> Company:
     company: Company = (
-        Company.objects.select_related("employees_number", "adress").prefetch_related("sectors").get(pk=pk)
+        Company.objects.select_related("employees_number", "address").prefetch_related("sectors").get(pk=pk)
     )
     return company
 

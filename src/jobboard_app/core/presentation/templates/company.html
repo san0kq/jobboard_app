@@ -21,9 +21,9 @@
       <p>Email: {{ company.email }}</p>
       <p>Phone: {{ company.phone_number }}</p>
       <p>Web site: {{ company.web_site }}</p>
-      <p>Location: {{ company.adress.city.country.name }}, {{ company.adress.city.name }}, {{ company.adress.street }}, {{ company.adress.house_number }}
-        {% if company.adress.office_number %}
-          -{{ company.adress.office_number }}
+      <p>Location: {{ company.address.city.country.name }}, {{ company.address.city.name }}, {{ company.address.street }}, {{ company.address.house_number }}
+        {% if company.address.office_number %}
+          - {{ company.address.office_number }}
         {% endif %}
       </p>
       {% if company.social_links.all %}

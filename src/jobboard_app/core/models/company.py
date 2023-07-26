@@ -19,8 +19,8 @@ class Company(BaseModel):
     email = models.EmailField()
     phone_number = models.CharField(max_length=20)
     web_site = models.URLField(max_length=200)
-    adress = models.OneToOneField(
-        to="accounts.Adress", on_delete=models.SET_NULL, null=True, blank=True, related_name="company"
+    address = models.OneToOneField(
+        to="accounts.Address", on_delete=models.SET_NULL, null=True, blank=True, related_name="company"
     )
     sectors = models.ManyToManyField(to="Sector", related_name="companies", related_query_name="company")
 

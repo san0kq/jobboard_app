@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Any
 
-from django.core.files import File
+from django.core.files.uploadedfile import InMemoryUploadedFile
 
 
 @dataclass
@@ -33,5 +33,5 @@ class AddVacancyDTO:
 @dataclass
 class AddResponseDTO:
     text: str
-    resume: File | None
+    resume: InMemoryUploadedFile | None
     phone_number: str

@@ -1,5 +1,11 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from django.core.files import File
+
 from django.core.exceptions import ValidationError
-from django.core.files import File
 
 
 def phone_number_validator(number: str) -> None:

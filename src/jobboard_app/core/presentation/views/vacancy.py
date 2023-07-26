@@ -2,12 +2,11 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Optional
 
-from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.views import View
 
 if TYPE_CHECKING:
-    from django.http import HttpRequest, HttpResponse
+    from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 
 from core.business_logic.dto import AddResponseDTO, AddVacancyDTO, VacancyFilterDTO
 from core.business_logic.services import (

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from django.core.files import File
+from django.core.files.uploadedfile import InMemoryUploadedFile
 
 
 @dataclass
@@ -15,7 +15,7 @@ class AddCompanyDTO:
     name: str
     employees_number: str
     founded_in: int
-    logo: File
+    logo: InMemoryUploadedFile
     description: str
     email: str
     phone_number: str

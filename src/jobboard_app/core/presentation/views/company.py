@@ -3,12 +3,11 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 
 from django.forms import formset_factory
-from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.views import View
 
 if TYPE_CHECKING:
-    from django.http import HttpRequest, HttpResponse
+    from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 
 from core.business_logic.dto import (
     AddCompanyDTO,
@@ -73,8 +72,8 @@ class AddCompanyView(View):
                     sociallink_form_data_list.append(sociallink_form_data)
             try:
                 add_company(company_data=company_form_data, sociallink_data=sociallink_form_data_list)
-            except CompanyAlreadyExists:
-                error_message = f"Company {company_form_data.name} is already exists."
+            except CompanyAlreadyExists as err:
+                error_message = err
                 context = {
                     "company_form": company_form,
                     "sociallink_formset": sociallink_formset,
