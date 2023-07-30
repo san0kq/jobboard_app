@@ -27,6 +27,7 @@ class Response(BaseModel):
 
     class Meta:
         verbose_name_plural = "Responses"
+        unique_together = ("user", "vacancy")
 
     def get_default_response_status(self) -> Any:
         return Status.objects.get_or_create(name='Created')[0]

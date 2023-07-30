@@ -4,3 +4,7 @@ class ReviewAlreadyExists(BaseException):
 
 class CompanyAlreadyExists(BaseException):
     pass
+
+
+class ResponseAlreadyExists(BaseException):
+    pass

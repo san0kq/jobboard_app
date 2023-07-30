@@ -3,6 +3,7 @@
 {% block title %}Add response{% endblock title %}
 {% block static %}
 <link rel="stylesheet" type="text/css" href="{% static "css/core/add_response.css" %}" type=”image/x-icon”>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
 {% endblock static %}
 {% block body %}
 
@@ -14,4 +15,23 @@
     </table>
     <input type="submit" value="Send" class="button">
 </form>
-  {% endblock body %}
+{% endblock body %}
+{% block script %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        {% if error_message %}
+        Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: '{{ error_message }}',
+            timer: 5000,
+            timerProgressBar: true,
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false
+        });
+        {% endif %}
+    });
+</script>
+{% endblock script %}

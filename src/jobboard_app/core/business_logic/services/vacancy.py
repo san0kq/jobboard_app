@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 import uuid
+from logging import getLogger
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from core.business_logic.dto import AddResponseDTO, AddVacancyDTO, VacancyFilterDTO
 
 from accounts.models import Country
+from core.business_logic.exceptions import ResponseAlreadyExists
 from core.models import (
     Company,
     Contract,
@@ -18,8 +20,10 @@ from core.models import (
     Vacancy,
     WorkFormat,
 )
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.db import transaction
+
+logger = getLogger(__name__)
 
 
 def get_vacancy_all(vacancy_filter: VacancyFilterDTO) -> list[Vacancy]:
@@ -86,6 +90,8 @@ def add_vacancy(vacancy_data: AddVacancyDTO) -> None:
             tags = [Tag.objects.get_or_create(name=tag)[0] for tag in tags_list]
             vacancy.tags.set(tags)
 
+        logger.info("New vacancy created.", extra={"vacancy_id": vacancy.pk, "employee_id": employee.pk})
+
 
 def get_vacancy_by_pk(pk: int) -> Vacancy:
     vacancy: Vacancy = (
@@ -93,22 +99,40 @@ def get_vacancy_by_pk(pk: int) -> Vacancy:
         .prefetch_related("countries", "contracts", "levels", "work_formats", "tags")
         .get(pk=pk)
     )
+    logger.info("Successfully got vacancy.", extra={"vacancy_id": pk})
     return vacancy
 
 
 def add_response(response_data: AddResponseDTO, vacancy_pk: int) -> None:
-    user = User.objects.get(pk=1)
+    user_model = get_user_model()
+    user = user_model.objects.get(pk=1)
     vacancy = Vacancy.objects.get(pk=vacancy_pk)
 
-    if response_data.resume:
-        resume_extension = response_data.resume.name.split(".")[-1]
-        resume_name = str(uuid.uuid4()) + "." + resume_extension
-        response_data.resume.name = resume_name
+    if not Response.objects.filter(user=user.pk, vacancy=vacancy.pk).exists():
+        if response_data.resume:
+            resume_extension = response_data.resume.name.split(".")[-1]
+            resume_name = str(uuid.uuid4()) + "." + resume_extension
+            response_data.resume.name = resume_name
 
-    Response.objects.create(
-        user=user,
-        vacancy=vacancy,
-        text=response_data.text,
-        resume=response_data.resume,
-        phone_number=response_data.phone_number,
-    )
+        response = Response.objects.create(
+            user=user,
+            vacancy=vacancy,
+            text=response_data.text,
+            resume=response_data.resume,
+            phone_number=response_data.phone_number,
+        )
+
+        if response_data.resume:
+            logger.info("Response resume uploaded.", extra={"path": response_data.resume.name})
+        logger.info(
+            "New response created.",
+            extra={"response_id": response.pk, "user_id": user.pk, "vacancy_id": vacancy_pk},
+        )
+    else:
+        logger.error(
+            "In response to this vacancy, there is already a response from this user.",
+            extra={"vacancy_id": vacancy_pk, "user_id": user.pk},
+        )
+        raise ResponseAlreadyExists(
+            "In response to this vacancy, there is already" " a response from this user."
+        )

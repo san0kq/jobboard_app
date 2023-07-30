@@ -16,6 +16,8 @@ from typing import Any
 
 from decouple import config
 
+from jobboard_app.logger_formatter import ContextFormatter
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 print(BASE_DIR)
@@ -140,3 +142,32 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Configure logging
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "console_formatter": {
+            "()": ContextFormatter,
+            "format": "{asctime} - {levelname} - {name} - {module}:{funcName}:{lineno} - {message}",
+            "style": "{",
+        }
+    },
+    "handlers": {
+        "console_handler": {
+            "class": "logging.StreamHandler",
+            "level": config("LOG_LEVEL"),
+            "formatter": "console_formatter",
+        }
+    },
+    "loggers": {
+        "root": {"level": config("LOG_LEVEL"), "handlers": ["console_handler"]},
+        "django": {
+            "level": "INFO",
+            "handlers": ["console_handler"],
+        },
+        "PIL": {"level": "WARNING", "handlers": ["console_handler"]},
+    },
+}

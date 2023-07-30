@@ -4,14 +4,13 @@ from .base import BaseModel
 
 
 class Employee(BaseModel):
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
+    user = models.OneToOneField(
+        to="auth.User", primary_key=True, on_delete=models.CASCADE, related_name="employee"
+    )
     company = models.ForeignKey(
         to="Company", on_delete=models.CASCADE, related_name="employees", related_query_name="employee"
     )
-    email = models.EmailField(unique=True)
     phone_number = models.CharField(max_length=20)
-    password = models.CharField(max_length=35)
     city = models.ForeignKey(
         to="accounts.City",
         on_delete=models.SET_NULL,

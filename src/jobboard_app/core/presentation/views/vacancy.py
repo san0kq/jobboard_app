@@ -9,6 +9,7 @@ if TYPE_CHECKING:
     from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 
 from core.business_logic.dto import AddResponseDTO, AddVacancyDTO, VacancyFilterDTO
+from core.business_logic.exceptions import ResponseAlreadyExists
 from core.business_logic.services import (
     add_response,
     add_vacancy,
@@ -68,7 +69,13 @@ class AddResponseView(View):
         form = AddResponseForm(request.POST, files=request.FILES)
         if form.is_valid():
             response_data = convert_data_from_form_to_dto(dto=AddResponseDTO, data_from_form=form.cleaned_data)
-            add_response(response_data=response_data, vacancy_pk=pk)
+            try:
+                add_response(response_data=response_data, vacancy_pk=pk)
+            except ResponseAlreadyExists:
+                vacancy = get_vacancy_by_pk(pk=pk)
+                error_message = "You have already applied for this job vacancy."
+                context = {"form": form, "vacancy": vacancy, "error_message": error_message}
+                return render(request, "add_response.html", context=context)
         else:
             vacancy = get_vacancy_by_pk(pk=pk)
             return render(request, "add_response.html", {"form": form, "vacancy": vacancy})
